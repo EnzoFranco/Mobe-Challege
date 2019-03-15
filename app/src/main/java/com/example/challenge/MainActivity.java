@@ -15,6 +15,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     private double amp;
 
     private ImageView plat1, plat2, plat3, plat4;
+    private TextView tv_action1, tv_action2, tv_action3, tv_action4;
+    private CheckBox cb_action1, cb_action2, cb_action3, cb_action4;
 
 
     @SuppressLint("InvalidWakeLockTag")
@@ -72,6 +75,16 @@ public class MainActivity extends AppCompatActivity {
         plat2 = findViewById(R.id.plat2);
         plat3 = findViewById(R.id.plat3);
         plat4 = findViewById(R.id.plat4);
+
+        tv_action1 = findViewById(R.id.action1);
+        tv_action2 = findViewById(R.id.action2);
+        tv_action3 = findViewById(R.id.action3);
+        tv_action4 = findViewById(R.id.action4);
+
+        cb_action1 = findViewById(R.id.cbAction1);
+        cb_action2 = findViewById(R.id.cbAction2);
+        cb_action3 = findViewById(R.id.cbAction3);
+        cb_action4 = findViewById(R.id.cbAction4);
 
         plats = new ArrayList<>();
         platsGame = new ArrayList<>();
@@ -134,10 +147,8 @@ public class MainActivity extends AppCompatActivity {
         int nb_plat_dispo = plats.size();
 
         for(int k=0;k<nb;k++){
-            int iPlat = new Random().nextInt(nb_plat_dispo);
-            if(iPlat<0){
-                iPlat=0;
-            }
+            Random r = new Random();
+            int iPlat = r.nextInt(100) % nb_plat_dispo;
             Plat platAdded = plats.get(iPlat);
             platsGame.add(platAdded);
         }
@@ -156,6 +167,29 @@ public class MainActivity extends AppCompatActivity {
         plat2.setImageResource(platsActive.get(1).getImage());
         plat3.setImageResource(platsActive.get(2).getImage());
         plat4.setImageResource(platsActive.get(3).getImage());
+
+        initTextView();
+    }
+
+    public void initTextView() {
+        tv_action1.setText(platsGame.get(iPlatGame).getActions().get(0).getNom());
+        tv_action2.setText(platsGame.get(iPlatGame).getActions().get(1).getNom());
+        if (platsGame.get(iPlatGame).getActions().size() == 2) {
+            tv_action3.setText("");
+            tv_action4.setText("");
+            cb_action3.setVisibility(View.INVISIBLE);
+            cb_action4.setVisibility(View.INVISIBLE);
+        } else if (platsGame.get(iPlatGame).getActions().size() == 3) {
+            tv_action3.setText(platsGame.get(iPlatGame).getActions().get(2).getNom());
+            tv_action4.setText("");
+            cb_action3.setVisibility(View.VISIBLE);
+            cb_action4.setVisibility(View.INVISIBLE);
+        } else {
+            tv_action3.setText(platsGame.get(iPlatGame).getActions().get(2).getNom());
+            tv_action4.setText(platsGame.get(iPlatGame).getActions().get(3).getNom());
+            cb_action3.setVisibility(View.VISIBLE);
+            cb_action4.setVisibility(View.VISIBLE);
+        }
     }
 
     //retourne les plats actifs
@@ -182,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void run() {
+                            initTextView();
                             if (iPlatGame < platsGame.size() - 3) {
                                 plat1.setImageResource(platsGame.get(iPlatGame).getImage());
                                 plat2.setImageResource(platsGame.get(iPlatGame+1).getImage());
@@ -234,20 +269,24 @@ public class MainActivity extends AppCompatActivity {
         actionsHotdog.add(parler);
 
         actionsPizza = new ArrayList<>();
-        actionsPizza.add(bougerTablette);
-        actionsPizza.add(touchScreen);
+        actionsPizza.add(masquerLuminosite);
+        actionsPizza.add(parler);
 
         actionsSalade = new ArrayList<>();
         actionsSalade.add(bougerTablette);
         actionsSalade.add(touchScreen);
 
         actionsSushi = new ArrayList<>();
+        actionsSushi.add(masquerLuminosite);
         actionsSushi.add(bougerTablette);
-        actionsSushi.add(touchScreen);
+        actionsSushi.add(parler);
+        actionsSushi.add(masquerLuminosite);
 
         actionsTacos = new ArrayList<>();
         actionsTacos.add(bougerTablette);
         actionsTacos.add(touchScreen);
+        actionsTacos.add(masquerLuminosite);
+        actionsTacos.add(parler);
     }
 
     // -- Sound level detector
