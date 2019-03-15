@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -298,6 +297,8 @@ public class MainActivity extends AppCompatActivity {
                                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+                                        startActivity(intent);
                                         System.exit(0);
                                     }
                                 })
