@@ -409,6 +409,21 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (!mRunning) {
+            mRunning = true;
+            start();
+        }
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        stop();
+    }
+
     private void start() {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
@@ -422,6 +437,17 @@ public class MainActivity extends AppCompatActivity {
             mWakeLock.acquire();
         }
         mHandler.postDelayed(mPollTask, POLL_INTERVAL);
+    }
+
+    private void stop() {
+        if (mWakeLock.isHeld()) {
+            mWakeLock.release();
+        }
+        mHandler.removeCallbacks(mSleepTask);
+        mHandler.removeCallbacks(mPollTask);
+        mSensor.stop();
+        mRunning = false;
+
     }
     // --
 
