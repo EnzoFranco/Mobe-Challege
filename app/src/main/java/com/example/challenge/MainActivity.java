@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler = new Handler();
     private NoiseDetector mSensor;
 
+    private float currentLight, posY, currentAccelerationY;
+    private double amp;
 
 
     @SuppressLint("InvalidWakeLockTag")
@@ -55,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView plat3 = findViewById(R.id.plat3);
         ImageView plat4 = findViewById(R.id.plat4);
 
-        plat4.setImageResource(R.drawable.burger);
         plats = new ArrayList<>();
         initActions();
         initPlats();
@@ -157,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Runnable mPollTask = new Runnable() {
         public void run() {
-            double amp = mSensor.getAmplitude();
+            amp = mSensor.getAmplitude();
             System.out.println("Sound:" +amp);
             mHandler.postDelayed(mPollTask, POLL_INTERVAL);
         }
@@ -190,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onSensorChanged(SensorEvent event) {
             if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
-                float currentLight = event.values[0];
+                currentLight = event.values[0];
                 System.out.println("Light :"+currentLight);
             }
         }
@@ -205,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onSensorChanged(SensorEvent event) {
             if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-                float currentAccelerationY = event.values[1];
+                currentAccelerationY = event.values[1];
                 if(currentAccelerationY < 0) {
                     currentAccelerationY = 0;
                 }
@@ -218,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
     private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            float posY = event.getY();
+            posY = event.getY();
             if(posY > v.getHeight()) {
                 posY = v.getHeight();
             }
@@ -242,4 +243,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void validerAction(Action actionAValider) {
+        if (actionAValider.getNom().equals("Masquer luminosité")) {
+            actionAValider.setValide(currentLight < 1f);
+        } else if (actionAValider.getNom().equals("Toucher l'écran")) {
+            actionAValider.setValide(posY > 0f);
+            posY = 0;
+        } else if (actionAValider.getNom().equals("Bouger la tablette")) {
+            actionAValider.setValide(currentAccelerationY > 10f);
+        } else {
+            actionAValider.setValide(amp > 10L);
+        }
+    }
 }
