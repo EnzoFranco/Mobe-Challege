@@ -7,6 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/plats_frame"
+        android:layout_width="600dp"
+        android:layout_height="128dp"
+        android:layout_marginTop="131dp"
+        android:layout_marginBottom="701dp"
+        android:background="#eff0f1"
+        android:src="@drawable/plats_frame"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/plat1"
@@ -195,18 +207,6 @@
         android:layout_marginEnd="443dp"
         android:layout_marginBottom="703dp"
         android:src="@drawable/plat_courant_frame"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/plats_frame"
-        android:layout_width="600dp"
-        android:layout_height="128dp"
-        android:layout_marginTop="131dp"
-        android:layout_marginBottom="701dp"
-        android:src="@drawable/plats_frame"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
