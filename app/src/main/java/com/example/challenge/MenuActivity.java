@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class MenuActivity extends AppCompatActivity {
 
     private Button button_play;
-    private TextView tv_gameTitle;
+    private Button button_quit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +19,10 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         button_play = findViewById(R.id.button_play);
-        tv_gameTitle = findViewById(R.id.tv_gameTitle);
+        button_quit = findViewById(R.id.button_quit);
+
+        button_play.setBackgroundResource(R.drawable.play);
+        button_quit.setBackgroundResource(R.drawable.quit);
     }
 
     public void sendMessage(View view)
