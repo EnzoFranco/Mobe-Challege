@@ -21,9 +21,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
+    // ------ Plats -------
     private List<Plat> plats;
     private List<Action> actionsBurger, actionsSalade, actionsPizza,
                     actionsHotdog, actionsFrites, actionsSushi,
@@ -31,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
 
     private int nb_plat = 10;
     private List<Plat> platsGame;
+    private int iPlatGame = 0;
+
+    private List<Plat> platsActive;
+    private int nb_plat_active = 4;
+    //5 sec
+    private int timerPlat = 5000;
 
     private int score = 0;
     private TextView tv_score;
@@ -63,10 +72,12 @@ public class MainActivity extends AppCompatActivity {
 
         plats = new ArrayList<>();
         platsGame = new ArrayList<>();
+        platsActive = new ArrayList<>();
         initActions();
         initPlats();
         initPlatsGame(nb_plat);
-        System.out.println(platsGame);
+        initActivePlat();
+        initTimer();
         SensorManager mySensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
 
@@ -115,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
         plats.add(new Plat("Donut", actionsDonut, R.drawable.donut));
     }
 
+    //initialise les plats pour la partie
     public void initPlatsGame(int nb) {
         int nb_plat_dispo = plats.size();
 
@@ -123,6 +135,42 @@ public class MainActivity extends AppCompatActivity {
             Plat platAdded = plats.get(iPlat);
             platsGame.add(platAdded);
         }
+    }
+
+    //retourne le plat en cours
+    public Plat getCurrentPlat(){
+        if(platsGame.size() >= iPlatGame){
+            return platsGame.get(iPlatGame);
+        }
+        return null;
+    }
+
+    //initialise les plats actifs
+    public void initActivePlat(){
+        for(int k=0;k<nb_plat_active;k++){
+            platsActive.add(platsGame.get(k));
+        }
+    }
+
+    //retourne les plats actifs
+    public void getActivePlat(){
+        for(int k=0;k<nb_plat_active;k++){
+            platsActive.add(platsGame.get(iPlatGame+k));
+        }
+    }
+
+    //initialise le timer
+    public void initTimer(){
+        System.out.println("Init timer");
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                // Your database code here
+                System.out.println("Update active list");
+                getActivePlat();
+            }
+        }, timerPlat);
     }
 
     public void initActions() {
