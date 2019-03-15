@@ -1,6 +1,5 @@
 package com.example.challenge;
 
-import android.media.Image;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -9,20 +8,17 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import android.view.MotionEvent;
-import android.view.View;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,34 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler = new Handler();
     private NoiseDetector mSensor;
 
-    private Runnable mSleepTask = new Runnable() {
-        public void run() {
-            start();
-        }
-    };
 
-    private Runnable mPollTask = new Runnable() {
-        public void run() {
-            double amp = mSensor.getAmplitude();
-            System.out.println("Sound:" +amp);
-            mHandler.postDelayed(mPollTask, POLL_INTERVAL);
-        }
-    };
-
-    private void start() {
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
-                    RECORD_AUDIO);
-        }
-
-        mSensor.start();
-        if (!mWakeLock.isHeld()) {
-            mWakeLock.acquire();
-        }
-        mHandler.postDelayed(mPollTask, POLL_INTERVAL);
-    }
 
     @SuppressLint("InvalidWakeLockTag")
     @Override
@@ -80,7 +49,43 @@ public class MainActivity extends AppCompatActivity {
         ImageView plat3 = findViewById(R.id.plat3);
         ImageView plat4 = findViewById(R.id.plat4);
 
-        initPlats();
+        //initPlats();
+
+        SensorManager mySensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+
+        // ----- Sound level detector -----
+
+        mSensor = new NoiseDetector();
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "NoiseAlert");
+
+
+        // --------- Light Sensor ---------
+
+
+        Sensor LightSensor = mySensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        if (LightSensor != null) {
+            mySensorManager.registerListener(
+                    LightSensorListener,
+                    LightSensor,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+
+        }
+        // ----- Accelerometer Sensor -----
+
+        Sensor AccelerometerSensor = mySensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        if (AccelerometerSensor != null) {
+            mySensorManager.registerListener(
+                    AccelerometerSensorListener,
+                    AccelerometerSensor,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        }
+
+        // ---- Screen touch coordinate ---
+
+        View myView = findViewById(R.id.main);
+        myView.setOnTouchListener(onTouchListener);
     }
 
     public void initPlats() {
@@ -134,46 +139,36 @@ public class MainActivity extends AppCompatActivity {
         actionsTacos.add(touchScreen);
     }
 
-        SensorManager mySensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-
-
-        // ----- Sound level detector -----
-
-        mSensor = new NoiseDetector();
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "NoiseAlert");
-
-
-        // --------- Light Sensor ---------
-
-
-        Sensor LightSensor = mySensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-        if (LightSensor != null) {
-            mySensorManager.registerListener(
-                    LightSensorListener,
-                    LightSensor,
-                    SensorManager.SENSOR_DELAY_NORMAL);
-
+    // -- Sound level detector
+    private Runnable mSleepTask = new Runnable() {
+        public void run() {
+            start();
         }
-        // ----- Accelerometer Sensor -----
+    };
 
-        Sensor AccelerometerSensor = mySensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        if (AccelerometerSensor != null) {
-            mySensorManager.registerListener(
-                    AccelerometerSensorListener,
-                    AccelerometerSensor,
-                    SensorManager.SENSOR_DELAY_NORMAL);
+    private Runnable mPollTask = new Runnable() {
+        public void run() {
+            double amp = mSensor.getAmplitude();
+            System.out.println("Sound:" +amp);
+            mHandler.postDelayed(mPollTask, POLL_INTERVAL);
+        }
+    };
+
+    private void start() {
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
+                    RECORD_AUDIO);
         }
 
-        // ---- Screen touch coordinate ---
-
-        View myView = findViewById(R.id.main);
-        myView.setOnTouchListener(onTouchListener);
-
-
-
+        mSensor.start();
+        if (!mWakeLock.isHeld()) {
+            mWakeLock.acquire();
+        }
+        mHandler.postDelayed(mPollTask, POLL_INTERVAL);
     }
-
+    // --
 
     // -- Listenners
 
