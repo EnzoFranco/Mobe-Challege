@@ -48,4 +48,9 @@ public class Plat {
     public void setValide(boolean valide) {
         this.valide = valide;
     }
+
+    @Override
+    public String toString() {
+        return "Plat : " + nom;
+    }
 }

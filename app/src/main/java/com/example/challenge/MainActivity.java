@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private float currentLight, posY, currentAccelerationY;
     private double amp;
 
+    private ImageView plat1, plat2, plat3, plat4;
+
 
     @SuppressLint("InvalidWakeLockTag")
     @Override
@@ -66,10 +68,10 @@ public class MainActivity extends AppCompatActivity {
 
         tv_score = findViewById(R.id.tv_score);
 
-        ImageView plat1 = findViewById(R.id.plat1);
-        ImageView plat2 = findViewById(R.id.plat2);
-        ImageView plat3 = findViewById(R.id.plat3);
-        ImageView plat4 = findViewById(R.id.plat4);
+        plat1 = findViewById(R.id.plat1);
+        plat2 = findViewById(R.id.plat2);
+        plat3 = findViewById(R.id.plat3);
+        plat4 = findViewById(R.id.plat4);
 
         plats = new ArrayList<>();
         platsGame = new ArrayList<>();
@@ -141,25 +143,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //retourne le plat en cours
-    public Plat getCurrentPlat(){
-        if(platsGame.size() >= iPlatGame){
-            return platsGame.get(iPlatGame);
-        }
-        return null;
-    }
-
     //initialise les plats actifs
     public void initActivePlat(){
         for(int k=0;k<nb_plat_active;k++){
             platsActive.add(platsGame.get(k));
         }
+        System.out.println(platsActive.get(0).toString());
+        System.out.println(platsActive.get(1).toString());
+        System.out.println(platsActive.get(2).toString());
+        System.out.println(platsActive.get(3).toString());
+        plat1.setImageResource(platsActive.get(0).getImage());
+        plat2.setImageResource(platsActive.get(1).getImage());
+        plat3.setImageResource(platsActive.get(2).getImage());
+        plat4.setImageResource(platsActive.get(3).getImage());
     }
 
     //retourne les plats actifs
     public void getActivePlat(){
         for(int k=0;k<nb_plat_active;k++){
-            platsActive.add(platsGame.get(iPlatGame+k));
+            if (iPlatGame + k < 10) {
+                platsActive.add(platsGame.get(iPlatGame+k));
+            }
         }
     }
 
@@ -170,8 +174,38 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Your database code here
-                System.out.println("Update active list");
                 getActivePlat();
+                if (iPlatGame < platsGame.size() - 1) {
+                    iPlatGame++;
+
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            if (iPlatGame < platsGame.size() - 3) {
+                                plat1.setImageResource(platsGame.get(iPlatGame).getImage());
+                                plat2.setImageResource(platsGame.get(iPlatGame+1).getImage());
+                                plat3.setImageResource(platsGame.get(iPlatGame+2).getImage());
+                                plat4.setImageResource(platsGame.get(iPlatGame+3).getImage());
+                            } else if (iPlatGame < platsGame.size() - 2) {
+                                plat1.setImageResource(platsGame.get(iPlatGame).getImage());
+                                plat2.setImageResource(platsGame.get(iPlatGame+1).getImage());
+                                plat3.setImageResource(platsGame.get(iPlatGame+2).getImage());
+                                plat4.setVisibility(View.INVISIBLE);
+                            } else if (iPlatGame < platsGame.size() - 1) {
+                                plat1.setImageResource(platsGame.get(iPlatGame).getImage());
+                                plat2.setImageResource(platsGame.get(iPlatGame+1).getImage());
+                                plat3.setVisibility(View.INVISIBLE);
+                                plat4.setVisibility(View.INVISIBLE);
+                            } else {
+                                plat1.setImageResource(platsGame.get(iPlatGame).getImage());
+                                plat2.setVisibility(View.INVISIBLE);
+                                plat3.setVisibility(View.INVISIBLE);
+                                plat4.setVisibility(View.INVISIBLE);
+                            }
+                        }
+                    });
+                }
             }
         }, timerPlatDuration,timerPlatDuration);
     }
@@ -226,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
     private Runnable mPollTask = new Runnable() {
         public void run() {
             amp = mSensor.getAmplitude();
-            System.out.println("Sound:" +amp);
+            //System.out.println("Sound:" +amp);
             mHandler.postDelayed(mPollTask, POLL_INTERVAL);
         }
     };
@@ -259,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
         public void onSensorChanged(SensorEvent event) {
             if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
                 currentLight = event.values[0];
-                System.out.println("Light :"+currentLight);
+                //System.out.println("Light :"+currentLight);
             }
         }
     };
@@ -277,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
                 if(currentAccelerationY < 0) {
                     currentAccelerationY = 0;
                 }
-                System.out.println("Acceleration:" +currentAccelerationY);
+                //System.out.println("Acceleration:" +currentAccelerationY);
             }
         }
 
