@@ -3,6 +3,8 @@ package com.example.challenge;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -182,6 +186,10 @@ public class MainActivity extends AppCompatActivity {
     public void initTextView() {
         tv_action1.setText(platsGame.get(currentPlat).getActions().get(0).getNom());
         tv_action2.setText(platsGame.get(currentPlat).getActions().get(1).getNom());
+        cb_action1.setChecked(false);
+        cb_action2.setChecked(false);
+        cb_action3.setChecked(false);
+        cb_action4.setChecked(false);
         if (platsGame.get(currentPlat).getActions().size() == 2) {
             tv_action3.setText("");
             tv_action4.setText("");
@@ -216,11 +224,11 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 // Your database code here
                 getActivePlat();
+                posY = 0;
                 timerSeconde = new Timer();
-                initTimerSeconde();
                 if (currentPlat < platsGame.size() - 1) {
+//                    initTimerSeconde();
                     currentPlat++;
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -249,6 +257,47 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                 }
+                else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (timerSeconde != null) {
+                                timerSeconde.cancel();
+                                timerSeconde.purge();
+                                timerSeconde = null;
+                            }
+                            if (timerPlat != null) {
+                                timerPlat.cancel();
+                                timerPlat.purge();
+                                timerPlat = null;
+                            }
+                            new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Fin de la partie")
+                                .setMessage("Score : " + score)
+
+                                // Specifying a listener allows you to take an action before dismissing the dialog.
+                                // The dialog is automatically dismissed when a dialog button is clicked.
+                                .setPositiveButton("Recommencer", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // Continue with delete operation
+                                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        System.exit(0);
+                                    }
+                                })
+
+                                // A null listener allows the button to dismiss the dialog and take no further action.
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        System.exit(0);
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                        }
+                    });
+                }
             }
         }, timerPlatDuration,timerPlatDuration);
     }
@@ -260,17 +309,44 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 // Your database code here
                 if(nbAppel == 100){
-                    timerSeconde.cancel();
-                    timerSeconde.purge();
-                    pbTimer.setProgress(100);
-                    nbAppel = 0;
+                    if (timerSeconde != null) {
+                        timerSeconde.cancel();
+                        timerSeconde.purge();
+                        pbTimer.setProgress(100);
+                        nbAppel = 0;
+                    }
                 }else{
                     //update la progress bar
                     nbAppel += 1;
                     pbTimer.setProgress(100-nbAppel);
 
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (validerAction(platsGame.get(currentPlat).getActions().get(0))) {
+                                cb_action1.setChecked(true);
+                                if(validerAction(platsGame.get(currentPlat).getActions().get(1))){
+                                    cb_action2.setChecked(true);
+                                    if (platsGame.get(currentPlat).getActions().size() == 2) {
+                                        validerPlat(platsGame.get(currentPlat));
+                                    } else {
+                                        if (validerAction(platsGame.get(currentPlat).getActions().get(2))) {
+                                            cb_action3.setChecked(true);
+                                            if (platsGame.get(currentPlat).getActions().size() == 3) {
+                                                validerPlat(platsGame.get(currentPlat));
+                                            } else {
+                                                if (validerAction(platsGame.get(currentPlat).getActions().get(3))) {
+                                                    cb_action4.setChecked(true);
+                                                    validerPlat(platsGame.get(currentPlat));
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
                 }
-
             }
         }, 0,50);
     }
@@ -418,16 +494,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void validerAction(Action actionAValider) {
+    public boolean validerAction(Action actionAValider) {
         if (actionAValider.getNom().equals("Masquer luminosité")) {
-            actionAValider.setValide(currentLight < 1f);
+            actionAValider.setValide(currentLight < 10f);
         } else if (actionAValider.getNom().equals("Toucher l'écran")) {
             actionAValider.setValide(posY > 0f);
-            posY = 0;
         } else if (actionAValider.getNom().equals("Bouger la tablette")) {
             actionAValider.setValide(currentAccelerationY > 10f);
         } else {
-            actionAValider.setValide(amp > 10L);
+            actionAValider.setValide(amp > 5L);
         }
+//        System.out.println("VALIDATION " + actionAValider.getNom() + actionAValider.isValide());
+        return actionAValider.isValide();
     }
 }
