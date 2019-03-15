@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     private int score = 0;
     private TextView tv_score;
 
+    private ImageView iv_sadOrHappy;
+    private TextView tv_welldone;
+
     // ------ Noise detector -------
 
     private static final int POLL_INTERVAL = 300;
@@ -67,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         tv_score = findViewById(R.id.tv_score);
+        tv_welldone = findViewById(R.id.tv_welldone);
+        iv_sadOrHappy = findViewById(R.id.iv_sadOrHappy);
 
         plat1 = findViewById(R.id.plat1);
         plat2 = findViewById(R.id.plat2);
@@ -337,7 +342,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        this.score += 500;
+        if (platTermine) {
+            this.score += 500;
+            iv_sadOrHappy.setImageResource(R.drawable.beast);
+            tv_welldone.setText("Well done! Keep going!");
+        }
+        else {
+            this.score -= 250;
+            iv_sadOrHappy.setImageResource(R.drawable.sad);
+            tv_welldone.setText("Too late... Go faster!");
+        }
         tv_score.setText("Score : " + String.valueOf(this.score));
 
         return platTermine;
