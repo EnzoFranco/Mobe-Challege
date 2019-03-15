@@ -7,4 +7,35 @@
     tools:context=".MainActivity">
 
 
+    <ImageView
+        android:id="@+id/plat1"
+        android:layout_width="106dp"
+        android:layout_height="106dp"
+        app:srcCompat="@drawable/burger"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="25dp" />
+
+    <ImageView
+        android:id="@+id/plat2"
+        android:layout_width="106dp"
+        android:layout_height="106dp"
+        app:srcCompat="@drawable/burger"
+        tools:layout_editor_absoluteX="177dp"
+        tools:layout_editor_absoluteY="25dp" />
+
+    <ImageView
+        android:id="@+id/plat3"
+        android:layout_width="106dp"
+        android:layout_height="106dp"
+        app:srcCompat="@drawable/burger"
+        tools:layout_editor_absoluteX="318dp"
+        tools:layout_editor_absoluteY="25dp" />
+
+    <ImageView
+        android:id="@+id/plat4"
+        android:layout_width="106dp"
+        android:layout_height="106dp"
+        app:srcCompat="@drawable/burger"
+        tools:layout_editor_absoluteX="459dp"
+        tools:layout_editor_absoluteY="25dp" />
 </android.support.constraint.ConstraintLayout>
