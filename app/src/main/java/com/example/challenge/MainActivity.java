@@ -25,18 +25,20 @@ public class MainActivity extends AppCompatActivity {
         ImageView plat3 = findViewById(R.id.plat3);
         ImageView plat4 = findViewById(R.id.plat4);
 
+        plats = new ArrayList<>();
+        initActions();
         initPlats();
     }
 
     public void initPlats() {
-        plats.add(new Plat("Burger", new ArrayList<Action>(), R.drawable.burger));
-        plats.add(new Plat("Salade", new ArrayList<Action>(), R.drawable.salade));
-        plats.add(new Plat("Pizza", new ArrayList<Action>(), R.drawable.pizza));
-        plats.add(new Plat("HotDog", new ArrayList<Action>(), R.drawable.hotdog));
-        plats.add(new Plat("Frites", new ArrayList<Action>(), R.drawable.frites));
-        plats.add(new Plat("Sushi", new ArrayList<Action>(), R.drawable.sushi));
-        plats.add(new Plat("Tacos", new ArrayList<Action>(), R.drawable.tacos));
-        plats.add(new Plat("Donut", new ArrayList<Action>(), R.drawable.donut));
+        plats.add(new Plat("Burger", actionsBurger, R.drawable.burger));
+        plats.add(new Plat("Salade", actionsSalade, R.drawable.salade));
+        plats.add(new Plat("Pizza", actionsPizza, R.drawable.pizza));
+        plats.add(new Plat("HotDog", actionsHotdog, R.drawable.hotdog));
+        plats.add(new Plat("Frites", actionsFrites, R.drawable.frites));
+        plats.add(new Plat("Sushi", actionsSushi, R.drawable.sushi));
+        plats.add(new Plat("Tacos", actionsTacos, R.drawable.tacos));
+        plats.add(new Plat("Donut", actionsDonut, R.drawable.donut));
     }
 
     public void initActions() {

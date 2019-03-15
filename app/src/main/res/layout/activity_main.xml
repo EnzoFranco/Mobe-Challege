@@ -11,31 +11,85 @@
         android:id="@+id/plat1"
         android:layout_width="106dp"
         android:layout_height="106dp"
-        app:srcCompat="@drawable/burger"
-        tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="25dp" />
+        android:layout_marginTop="141dp"
+        android:layout_marginBottom="713dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/plat2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/burger" />
 
     <ImageView
         android:id="@+id/plat2"
         android:layout_width="106dp"
         android:layout_height="106dp"
-        app:srcCompat="@drawable/burger"
-        tools:layout_editor_absoluteX="177dp"
-        tools:layout_editor_absoluteY="25dp" />
+        android:layout_marginTop="141dp"
+        android:layout_marginBottom="713dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/plat3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/plat1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/burger" />
 
     <ImageView
         android:id="@+id/plat3"
         android:layout_width="106dp"
         android:layout_height="106dp"
-        app:srcCompat="@drawable/burger"
-        tools:layout_editor_absoluteX="318dp"
-        tools:layout_editor_absoluteY="25dp" />
+        android:layout_marginTop="141dp"
+        android:layout_marginBottom="713dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/plat4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/plat2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/burger" />
 
     <ImageView
         android:id="@+id/plat4"
         android:layout_width="106dp"
         android:layout_height="106dp"
-        app:srcCompat="@drawable/burger"
-        tools:layout_editor_absoluteX="459dp"
-        tools:layout_editor_absoluteY="25dp" />
+        android:layout_marginTop="141dp"
+        android:layout_marginBottom="713dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/plat3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/burger" />
+
+    <TextView
+        android:id="@+id/tv_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="267dp"
+        android:layout_marginTop="816dp"
+        android:layout_marginEnd="286dp"
+        android:layout_marginBottom="125dp"
+        android:text="Score : "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/pb_timer"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="313dp"
+        android:layout_height="13dp"
+        android:layout_marginStart="127dp"
+        android:layout_marginTop="310dp"
+        android:layout_marginEnd="160dp"
+        android:layout_marginBottom="637dp"
+        android:max="100"
+        android:progress="50"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
