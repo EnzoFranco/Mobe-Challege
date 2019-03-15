@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         ImageView plat3 = findViewById(R.id.plat3);
         ImageView plat4 = findViewById(R.id.plat4);
 
+        plat4.setImageResource(R.drawable.burger);
         plats = new ArrayList<>();
         initActions();
         initPlats();

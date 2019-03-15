@@ -68,15 +68,13 @@
         android:id="@+id/tv_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="267dp"
-        android:layout_marginTop="816dp"
-        android:layout_marginEnd="286dp"
-        android:layout_marginBottom="125dp"
-        android:text="Score : "
+        android:layout_marginBottom="40dp"
+        android:text="Score : 0"
+        android:textSize="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/pb_timer"
@@ -93,4 +91,97 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/action1"
+        android:layout_width="327dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="40dp"
+        android:text="TextView"
+        android:textSize="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cbAction1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pb_timer" />
+
+    <TextView
+        android:id="@+id/action2"
+        android:layout_width="327dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="40dp"
+        android:text="TextView"
+        android:textSize="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cbAction2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/action1" />
+
+    <TextView
+        android:id="@+id/action3"
+        android:layout_width="327dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="40dp"
+        android:text="TextView"
+        android:textSize="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cbAction3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/action2" />
+
+    <TextView
+        android:id="@+id/action4"
+        android:layout_width="327dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="40dp"
+        android:text="TextView"
+        android:textSize="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cbAction4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/action3" />
+
+    <CheckBox
+        android:id="@+id/cbAction1"
+        android:layout_width="wrap_content"
+        android:layout_height="51dp"
+        android:layout_marginEnd="20dp"
+        android:enabled="false"
+        android:textSize="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/action1"
+        app:layout_constraintTop_toTopOf="@+id/action1" />
+
+    <CheckBox
+        android:id="@+id/cbAction2"
+        android:layout_width="wrap_content"
+        android:layout_height="51dp"
+        android:layout_marginEnd="20dp"
+        android:enabled="false"
+        android:textSize="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/action2"
+        app:layout_constraintTop_toTopOf="@+id/action2" />
+
+    <CheckBox
+        android:id="@+id/cbAction3"
+        android:layout_width="wrap_content"
+        android:layout_height="51dp"
+        android:layout_marginEnd="20dp"
+        android:enabled="false"
+        android:textSize="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/action3"
+        app:layout_constraintTop_toTopOf="@+id/action3" />
+
+    <CheckBox
+        android:id="@+id/cbAction4"
+        android:layout_width="wrap_content"
+        android:layout_height="51dp"
+        android:layout_marginEnd="20dp"
+        android:enabled="false"
+        android:textSize="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/action4"
+        app:layout_constraintTop_toTopOf="@+id/action4" />
+
 </android.support.constraint.ConstraintLayout>
