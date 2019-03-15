@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private List<Action> actionsBurger, actionsSalade, actionsPizza,
                     actionsHotdog, actionsFrites, actionsSushi,
                     actionsTacos, actionsDonut;
+
+    private int score = 0;
+    private TextView tv_score;
 
     // ------ Noise detector -------
 
@@ -43,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        tv_score = findViewById(R.id.tv_score);
 
         ImageView plat1 = findViewById(R.id.plat1);
         ImageView plat2 = findViewById(R.id.plat2);
@@ -220,6 +226,20 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     };
+
+    public boolean validerPlat(Plat plat){
+        boolean platTermine = true;
+        for (Action action: plat.getActions()){
+            if (!action.isValide()){
+                platTermine = false;
+            }
+        }
+
+        this.score += 500;
+        tv_score.setText("Score : " + String.valueOf(this.score));
+
+        return platTermine;
+    }
 
 
 }
