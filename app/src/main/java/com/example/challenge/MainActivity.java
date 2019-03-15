@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private List<Action> actionsBurger, actionsSalade, actionsPizza,
                     actionsHotdog, actionsFrites, actionsSushi,
                     actionsTacos, actionsDonut;
+
+    private int nb_plat = 10;
+    private List<Plat> platsGame;
 
     private int score = 0;
     private TextView tv_score;
@@ -58,9 +62,11 @@ public class MainActivity extends AppCompatActivity {
         ImageView plat4 = findViewById(R.id.plat4);
 
         plats = new ArrayList<>();
+        platsGame = new ArrayList<>();
         initActions();
         initPlats();
-
+        initPlatsGame(nb_plat);
+        System.out.println(platsGame);
         SensorManager mySensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
 
@@ -107,6 +113,16 @@ public class MainActivity extends AppCompatActivity {
         plats.add(new Plat("Sushi", actionsSushi, R.drawable.sushi));
         plats.add(new Plat("Tacos", actionsTacos, R.drawable.tacos));
         plats.add(new Plat("Donut", actionsDonut, R.drawable.donut));
+    }
+
+    public void initPlatsGame(int nb) {
+        int nb_plat_dispo = plats.size();
+
+        for(int k=0;k<nb;k++){
+            int iPlat = new Random().nextInt(nb_plat_dispo+ 1);
+            Plat platAdded = plats.get(iPlat);
+            platsGame.add(platAdded);
+        }
     }
 
     public void initActions() {
