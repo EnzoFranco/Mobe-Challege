@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int nb_plat = 10;
     private List<Plat> platsGame;
-    private int iPlatGame = 0;
+    private int currentPlat = 0;
 
     private List<Plat> platsActive;
     private int nb_plat_active = 4;
@@ -164,10 +164,6 @@ public class MainActivity extends AppCompatActivity {
         for(int k=0;k<nb_plat_active;k++){
             platsActive.add(platsGame.get(k));
         }
-        System.out.println(platsActive.get(0).toString());
-        System.out.println(platsActive.get(1).toString());
-        System.out.println(platsActive.get(2).toString());
-        System.out.println(platsActive.get(3).toString());
         plat1.setImageResource(platsActive.get(0).getImage());
         plat2.setImageResource(platsActive.get(1).getImage());
         plat3.setImageResource(platsActive.get(2).getImage());
@@ -177,21 +173,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initTextView() {
-        tv_action1.setText(platsGame.get(iPlatGame).getActions().get(0).getNom());
-        tv_action2.setText(platsGame.get(iPlatGame).getActions().get(1).getNom());
-        if (platsGame.get(iPlatGame).getActions().size() == 2) {
+        tv_action1.setText(platsGame.get(currentPlat).getActions().get(0).getNom());
+        tv_action2.setText(platsGame.get(currentPlat).getActions().get(1).getNom());
+        if (platsGame.get(currentPlat).getActions().size() == 2) {
             tv_action3.setText("");
             tv_action4.setText("");
             cb_action3.setVisibility(View.INVISIBLE);
             cb_action4.setVisibility(View.INVISIBLE);
-        } else if (platsGame.get(iPlatGame).getActions().size() == 3) {
-            tv_action3.setText(platsGame.get(iPlatGame).getActions().get(2).getNom());
+        } else if (platsGame.get(currentPlat).getActions().size() == 3) {
+            tv_action3.setText(platsGame.get(currentPlat).getActions().get(2).getNom());
             tv_action4.setText("");
             cb_action3.setVisibility(View.VISIBLE);
             cb_action4.setVisibility(View.INVISIBLE);
         } else {
-            tv_action3.setText(platsGame.get(iPlatGame).getActions().get(2).getNom());
-            tv_action4.setText(platsGame.get(iPlatGame).getActions().get(3).getNom());
+            tv_action3.setText(platsGame.get(currentPlat).getActions().get(2).getNom());
+            tv_action4.setText(platsGame.get(currentPlat).getActions().get(3).getNom());
             cb_action3.setVisibility(View.VISIBLE);
             cb_action4.setVisibility(View.VISIBLE);
         }
@@ -200,8 +196,8 @@ public class MainActivity extends AppCompatActivity {
     //retourne les plats actifs
     public void getActivePlat(){
         for(int k=0;k<nb_plat_active;k++){
-            if (iPlatGame + k < 10) {
-                platsActive.add(platsGame.get(iPlatGame+k));
+            if (currentPlat + k < 10) {
+                platsActive.add(platsGame.get(currentPlat+k));
             }
         }
     }
@@ -214,31 +210,31 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 // Your database code here
                 getActivePlat();
-                if (iPlatGame < platsGame.size() - 1) {
-                    iPlatGame++;
+                if (currentPlat < platsGame.size() - 1) {
+                    currentPlat++;
 
                     runOnUiThread(new Runnable() {
 
                         @Override
                         public void run() {
                             initTextView();
-                            if (iPlatGame < platsGame.size() - 3) {
-                                plat1.setImageResource(platsGame.get(iPlatGame).getImage());
-                                plat2.setImageResource(platsGame.get(iPlatGame+1).getImage());
-                                plat3.setImageResource(platsGame.get(iPlatGame+2).getImage());
-                                plat4.setImageResource(platsGame.get(iPlatGame+3).getImage());
-                            } else if (iPlatGame < platsGame.size() - 2) {
-                                plat1.setImageResource(platsGame.get(iPlatGame).getImage());
-                                plat2.setImageResource(platsGame.get(iPlatGame+1).getImage());
-                                plat3.setImageResource(platsGame.get(iPlatGame+2).getImage());
+                            if (currentPlat < platsGame.size() - 3) {
+                                plat1.setImageResource(platsGame.get(currentPlat).getImage());
+                                plat2.setImageResource(platsGame.get(currentPlat+1).getImage());
+                                plat3.setImageResource(platsGame.get(currentPlat+2).getImage());
+                                plat4.setImageResource(platsGame.get(currentPlat+3).getImage());
+                            } else if (currentPlat < platsGame.size() - 2) {
+                                plat1.setImageResource(platsGame.get(currentPlat).getImage());
+                                plat2.setImageResource(platsGame.get(currentPlat+1).getImage());
+                                plat3.setImageResource(platsGame.get(currentPlat+2).getImage());
                                 plat4.setVisibility(View.INVISIBLE);
-                            } else if (iPlatGame < platsGame.size() - 1) {
-                                plat1.setImageResource(platsGame.get(iPlatGame).getImage());
-                                plat2.setImageResource(platsGame.get(iPlatGame+1).getImage());
+                            } else if (currentPlat < platsGame.size() - 1) {
+                                plat1.setImageResource(platsGame.get(currentPlat).getImage());
+                                plat2.setImageResource(platsGame.get(currentPlat+1).getImage());
                                 plat3.setVisibility(View.INVISIBLE);
                                 plat4.setVisibility(View.INVISIBLE);
                             } else {
-                                plat1.setImageResource(platsGame.get(iPlatGame).getImage());
+                                plat1.setImageResource(platsGame.get(currentPlat).getImage());
                                 plat2.setVisibility(View.INVISIBLE);
                                 plat3.setVisibility(View.INVISIBLE);
                                 plat4.setVisibility(View.INVISIBLE);
@@ -304,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
     private Runnable mPollTask = new Runnable() {
         public void run() {
             amp = mSensor.getAmplitude();
-            //System.out.println("Sound:" +amp);
             mHandler.postDelayed(mPollTask, POLL_INTERVAL);
         }
     };
@@ -337,7 +332,6 @@ public class MainActivity extends AppCompatActivity {
         public void onSensorChanged(SensorEvent event) {
             if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
                 currentLight = event.values[0];
-                //System.out.println("Light :"+currentLight);
             }
         }
     };
@@ -355,7 +349,6 @@ public class MainActivity extends AppCompatActivity {
                 if(currentAccelerationY < 0) {
                     currentAccelerationY = 0;
                 }
-                //System.out.println("Acceleration:" +currentAccelerationY);
             }
         }
 
@@ -368,7 +361,6 @@ public class MainActivity extends AppCompatActivity {
             if(posY > v.getHeight()) {
                 posY = v.getHeight();
             }
-            System.out.println("Touch:" + posY);
             return true;
         }
     };
