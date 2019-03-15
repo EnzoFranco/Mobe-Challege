@@ -17,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -43,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
     private int timerPlatDuration = 5000;
     private Timer timerPlat = new Timer();
 
+    private int seconde = 0;
+    private Timer timerSeconde = new Timer();
+
     private int score = 0;
     private TextView tv_score;
 
@@ -64,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView plat1, plat2, plat3, plat4;
     private TextView tv_action1, tv_action2, tv_action3, tv_action4;
     private CheckBox cb_action1, cb_action2, cb_action3, cb_action4;
-
+    private ProgressBar pbTimer;
 
     @SuppressLint("InvalidWakeLockTag")
     @Override
@@ -80,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
         plat2 = findViewById(R.id.plat2);
         plat3 = findViewById(R.id.plat3);
         plat4 = findViewById(R.id.plat4);
+
+        pbTimer = findViewById(R.id.pb_timer);
 
         tv_action1 = findViewById(R.id.action1);
         tv_action2 = findViewById(R.id.action2);
@@ -210,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 // Your database code here
                 getActivePlat();
+                seconde = 0;
                 if (currentPlat < platsGame.size() - 1) {
                     currentPlat++;
 
@@ -217,7 +224,8 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void run() {
-                            initTextView();
+                            timerSeconde = new Timer();
+                            initTimerSeconde();
                             if (currentPlat < platsGame.size() - 3) {
                                 plat1.setImageResource(platsGame.get(currentPlat).getImage());
                                 plat2.setImageResource(platsGame.get(currentPlat+1).getImage());
@@ -244,6 +252,30 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }, timerPlatDuration,timerPlatDuration);
+    }
+
+
+    public void initTimerSeconde(){
+        //System.out.println("Init Timer seconde");
+        timerSeconde.scheduleAtFixedRate(new TimerTask(){
+            @Override
+            public void run() {
+                // Your database code here
+                if(seconde == 0){
+                    timerSeconde.cancel();
+                    timerSeconde.purge();
+                    pbTimer.setProgress(100);
+                    System.out.println(seconde);
+                }else{
+                    if(seconde <= 5){
+                        //update la progress bar
+                        pbTimer.setProgress(100-(seconde*20));
+                        System.out.println(seconde);
+                    }
+                }
+                seconde += 1;
+            }
+        }, 1000,1000);
     }
 
     public void initActions() {
