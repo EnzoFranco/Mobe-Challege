@@ -39,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private List<Plat> platsActive;
     private int nb_plat_active = 4;
     //5 sec
-    private int timerPlat = 5000;
+    private int timerPlatDuration = 5000;
+    private Timer timerPlat = new Timer();
 
     private int score = 0;
     private TextView tv_score;
@@ -131,7 +132,10 @@ public class MainActivity extends AppCompatActivity {
         int nb_plat_dispo = plats.size();
 
         for(int k=0;k<nb;k++){
-            int iPlat = new Random().nextInt(nb_plat_dispo+ 1);
+            int iPlat = new Random().nextInt(nb_plat_dispo);
+            if(iPlat<0){
+                iPlat=0;
+            }
             Plat platAdded = plats.get(iPlat);
             platsGame.add(platAdded);
         }
@@ -162,15 +166,14 @@ public class MainActivity extends AppCompatActivity {
     //initialise le timer
     public void initTimer(){
         System.out.println("Init timer");
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        timerPlat.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 // Your database code here
                 System.out.println("Update active list");
                 getActivePlat();
             }
-        }, timerPlat);
+        }, timerPlatDuration,timerPlatDuration);
     }
 
     public void initActions() {
