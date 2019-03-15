@@ -316,7 +316,6 @@ public class MainActivity extends AppCompatActivity {
         timerSeconde.scheduleAtFixedRate(new TimerTask(){
             @Override
             public void run() {
-                // Your database code here
 
                 if(nbAppel == 100){
                     if (timerSeconde != null) {
@@ -382,7 +381,7 @@ public class MainActivity extends AppCompatActivity {
         actionsFrites = new ArrayList<>();
         actionsFrites.add(bougerTablette);
         actionsFrites.add(touchScreen);
-        actionsFrites.add(bougerTablette);
+        actionsFrites.add(parler);
 
         actionsHotdog = new ArrayList<>();
         actionsHotdog.add(touchScreen);
@@ -400,7 +399,7 @@ public class MainActivity extends AppCompatActivity {
         actionsSushi.add(masquerLuminosite);
         actionsSushi.add(bougerTablette);
         actionsSushi.add(parler);
-        actionsSushi.add(masquerLuminosite);
+        actionsSushi.add(touchScreen);
 
         actionsTacos = new ArrayList<>();
         actionsTacos.add(bougerTablette);
@@ -513,6 +512,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean validerPlat(Plat plat){
         boolean platTermine = true;
         for (Action action: plat.getActions()){
+            System.out.println(action.getNom() + " " + action.isValide());
             if (!action.isValide()){
                 platTermine = false;
             }
@@ -537,16 +537,23 @@ public class MainActivity extends AppCompatActivity {
     public boolean validerAction(Action actionAValider, boolean isAlreadyChecked) {
         if(!isAlreadyChecked) {
             if (actionAValider.getNom().equals("Masquer luminosité")) {
-                actionAValider.setValide(currentLight < 10f);
+                actionAValider.setValide(currentLight < 5f);
             } else if (actionAValider.getNom().equals("Toucher l'écran")) {
                 actionAValider.setValide(posY > 0f);
             } else if (actionAValider.getNom().equals("Bouger la tablette")) {
-                actionAValider.setValide(currentAccelerationY > 5);
+                actionAValider.setValide(currentAccelerationY > 10);
             } else {
                 actionAValider.setValide(amp > 5L);
             }
             return actionAValider.isValide();
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+        startActivity(intent);
+        System.exit(0);
     }
 }

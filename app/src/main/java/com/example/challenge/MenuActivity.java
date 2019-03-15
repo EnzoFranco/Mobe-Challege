@@ -26,11 +26,11 @@ public class MenuActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(MenuActivity.this, MainActivity.class);
         startActivity(intent);
+        System.exit(0);
     }
 
     public void quitGame(View view)
     {
-        Intent intent = new Intent(MenuActivity.this, MenuActivity.class);
         System.exit(0);
     }
 
