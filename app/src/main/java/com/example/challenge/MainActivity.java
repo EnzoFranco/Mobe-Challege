@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private int timerPlatDuration = 5000;
     private Timer timerPlat = new Timer();
 
-    private int seconde = 0;
+    private int nbAppel = 0;
     private Timer timerSeconde = new Timer();
 
     private int score = 0;
@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         initPlats();
         initPlatsGame(nb_plat);
         initActivePlat();
+        initTimerSeconde();
         initTimer();
         SensorManager mySensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
@@ -210,22 +211,20 @@ public class MainActivity extends AppCompatActivity {
 
     //initialise le timer
     public void initTimer(){
-        System.out.println("Init timer");
         timerPlat.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 // Your database code here
                 getActivePlat();
-                seconde = 0;
+                timerSeconde = new Timer();
+                initTimerSeconde();
                 if (currentPlat < platsGame.size() - 1) {
                     currentPlat++;
 
                     runOnUiThread(new Runnable() {
-
                         @Override
                         public void run() {
-                            timerSeconde = new Timer();
-                            initTimerSeconde();
+                            initTextView();
                             if (currentPlat < platsGame.size() - 3) {
                                 plat1.setImageResource(platsGame.get(currentPlat).getImage());
                                 plat2.setImageResource(platsGame.get(currentPlat+1).getImage());
@@ -256,26 +255,24 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void initTimerSeconde(){
-        //System.out.println("Init Timer seconde");
         timerSeconde.scheduleAtFixedRate(new TimerTask(){
             @Override
             public void run() {
                 // Your database code here
-                if(seconde == 0){
+                if(nbAppel == 100){
                     timerSeconde.cancel();
                     timerSeconde.purge();
                     pbTimer.setProgress(100);
-                    System.out.println(seconde);
+                    nbAppel = 0;
                 }else{
-                    if(seconde <= 5){
-                        //update la progress bar
-                        pbTimer.setProgress(100-(seconde*20));
-                        System.out.println(seconde);
-                    }
+                    //update la progress bar
+                    nbAppel += 1;
+                    pbTimer.setProgress(100-nbAppel);
+
                 }
-                seconde += 1;
+
             }
-        }, 1000,1000);
+        }, 0,50);
     }
 
     public void initActions() {
